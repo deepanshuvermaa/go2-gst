@@ -1,0 +1,216 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String         @id @default(cuid())
+  phone         String         @unique
+  name          String?
+  email         String?        @unique
+  role          Role           @default(CLIENT)
+  organizationId String?
+  organization  Organization?  @relation(fields: [organizationId], references: [id])
+  transactions  Transaction[]
+  sessions      Session[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([phone])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+}
+
+model Organization {
+  id           String        @id @default(cuid())
+  name         String
+  gstin        String?
+  pan          String?
+  address      String?
+  city         String?
+  state        String?
+  pincode      String?
+  inviteCode   String        @unique @default(cuid())
+  users        User[]
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Transaction {
+  id                     String    @id @default(cuid())
+  userId                 String
+  user                   User      @relation(fields: [userId], references: [id])
+  organizationId         String?
+  organization           Organization? @relation(fields: [organizationId], references: [id])
+
+  // Document metadata
+  documentType           DocType   @default(TAX_INVOICE)
+  documentLanguage       String?
+  financialYear          String?
+  invoiceNumber          String?
+  invoiceDate            DateTime?
+  dueDate                DateTime?
+  imageUrl               String?
+
+  // Seller
+  sellerName             String?
+  sellerGstin            String?
+  sellerGstinValid       Boolean?
+  sellerPan              String?
+  sellerAddress          String?
+  sellerCity             String?
+  sellerState            String?
+  sellerStateCode        String?
+  sellerPhone            String?
+
+  // Buyer
+  buyerName              String?
+  buyerGstin             String?
+  buyerGstinValid        Boolean?
+  buyerPan               String?
+  buyerState             String?
+  buyerStateCode         String?
+
+  // Supply details
+  placeOfSupply          String?
+  placeOfSupplyCode      String?
+  supplyType             SupplyType?
+  reverseCharge          Boolean   @default(false)
+
+  // e-Invoice
+  irn                    String?
+  ackNumber              String?
+  ackDate                DateTime?
+  ewbNumber              String?
+
+  // Totals
+  subtotal               Decimal?  @db.Decimal(12, 2)
+  totalDiscount          Decimal?  @db.Decimal(12, 2)
+  totalCgst              Decimal?  @db.Decimal(12, 2)
+  totalSgst              Decimal?  @db.Decimal(12, 2)
+  totalIgst              Decimal?  @db.Decimal(12, 2)
+  totalCess              Decimal?  @db.Decimal(12, 2)
+  totalTax               Decimal?  @db.Decimal(12, 2)
+  roundOff               Decimal?  @db.Decimal(8, 2)
+  grandTotal             Decimal?  @db.Decimal(12, 2)
+  currency               String    @default("INR")
+
+  // TDS/TCS
+  tdsApplicable          Boolean   @default(false)
+  tdsSection             String?
+  tdsAmount              Decimal?  @db.Decimal(12, 2)
+  tcsApplicable          Boolean   @default(false)
+  tcsSection             String?
+  tcsAmount              Decimal?  @db.Decimal(12, 2)
+
+  // ITC
+  itcEligible            Boolean?
+  itcType                String?
+  itcBlockedReason       String?
+
+  // AI metadata
+  extractionConfidence   Decimal?  @db.Decimal(3, 2)
+  amountsMatchCheck      Boolean?
+  extractionWarnings     String[]  @default([])
+
+  // Categorization
+  category               String?
+  transactionDirection   Direction @default(EXPENSE)
+
+  // Payment
+  paymentMode            String?
+  bankName               String?
+  ifsc                   String?
+
+  // Relations
+  lineItems              LineItem[]
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([financialYear])
+  @@index([invoiceDate])
+  @@index([sellerGstin])
+}
+
+model LineItem {
+  id              String      @id @default(cuid())
+  transactionId   String
+  transaction     Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  slNo            Int?
+  description     String?
+  hsnCode         String?
+  sacCode         String?
+  productType     ProductType?
+  quantity        Decimal?    @db.Decimal(12, 4)
+  unit            String?
+  unitPrice       Decimal?    @db.Decimal(12, 2)
+  discountPercent Decimal?    @db.Decimal(5, 2)
+  discountAmount  Decimal?    @db.Decimal(12, 2)
+  taxableValue    Decimal?    @db.Decimal(12, 2)
+  gstRatePercent  Decimal?    @db.Decimal(5, 2)
+  cgstRate        Decimal?    @db.Decimal(5, 2)
+  cgstAmount      Decimal?    @db.Decimal(12, 2)
+  sgstRate        Decimal?    @db.Decimal(5, 2)
+  sgstAmount      Decimal?    @db.Decimal(12, 2)
+  igstRate        Decimal?    @db.Decimal(5, 2)
+  igstAmount      Decimal?    @db.Decimal(12, 2)
+  cessRate        Decimal?    @db.Decimal(5, 2)
+  cessAmount      Decimal?    @db.Decimal(12, 2)
+  lineTotal       Decimal?    @db.Decimal(12, 2)
+  createdAt       DateTime    @default(now())
+
+  @@index([transactionId])
+}
+
+enum Role {
+  CLIENT
+  CA
+  ADMIN
+}
+
+enum DocType {
+  TAX_INVOICE
+  BILL_OF_SUPPLY
+  CREDIT_NOTE
+  DEBIT_NOTE
+  RECEIPT
+  UPI_SCREENSHOT
+  BANK_STATEMENT
+  SALARY_SLIP
+  PROFORMA
+  DELIVERY_CHALLAN
+  UNKNOWN
+}
+
+enum SupplyType {
+  INTRA_STATE
+  INTER_STATE
+  EXPORT
+  SEZ_WITH_PAYMENT
+  SEZ_WITHOUT_PAYMENT
+}
+
+enum Direction {
+  INCOME
+  EXPENSE
+}
+
+enum ProductType {
+  GOODS
+  SERVICES
+}

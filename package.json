@@ -1,0 +1,38 @@
+{
+  "name": "go2gst",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "^25.9.1",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.6",
+    "firebase": "^12.13.0",
+    "firebase-admin": "^13.10.0",
+    "gstin-validator": "^1.1.3",
+    "ifsc": "^2.0.50",
+    "indian-number-format": "^1.0.5",
+    "next": "^16.2.6",
+    "pg": "^8.21.0",
+    "postcss": "^8.5.15",
+    "prisma": "^7.8.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.20.0",
+    "dotenv": "^17.4.2"
+  }
+}

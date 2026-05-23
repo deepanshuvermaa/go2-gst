@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas-white: #ffffff;
+  --color-ink-black: #000000;
+  --color-deep-midnight: #010110;
+  --color-carbon-gray: #111117;
+  --color-steel-gray: #22222a;
+  --color-muted-stone: #73737c;
+  --color-deep-space-violet: #635bff;
+  --color-violet-hover: #7c75ff;
+  --color-violet-muted: rgba(99, 91, 255, 0.08);
+  --color-success: #00c853;
+  --color-warning: #ff9100;
+  --color-error: #ff1744;
+  --color-surface-subtle: #fafafb;
+
+  --font-display: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --text-caption: 0.75rem;
+  --text-body-sm: 0.875rem;
+  --text-body: 1rem;
+  --text-subheading: 1.75rem;
+  --text-heading: 3.25rem;
+  --text-display: 4.75rem;
+
+  --leading-caption: 1.2;
+  --leading-body-sm: 1.4;
+  --leading-body: 1.6;
+  --leading-subheading: 1.2;
+  --leading-heading: 1.1;
+  --leading-display: 1.05;
+
+  --tracking-tight: -0.02em;
+  --tracking-tighter: -0.03em;
+
+  --spacing-4: 4px;
+  --spacing-6: 6px;
+  --spacing-8: 8px;
+  --spacing-10: 10px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-56: 56px;
+  --spacing-64: 64px;
+  --spacing-70: 70px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+  --spacing-120: 120px;
+
+  --radius-sm: 2px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 100px;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-canvas-white);
+    color: var(--color-ink-black);
+    letter-spacing: -0.02em;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    color: var(--color-deep-midnight);
+    line-height: 1.1;
+  }
+
+  ::selection {
+    background-color: var(--color-deep-space-violet);
+    color: white;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-deep-space-violet);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-deep-midnight) 0%, var(--color-deep-space-violet) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .surface-0 { background-color: var(--color-canvas-white); }
+  .surface-1 { background-color: var(--color-carbon-gray); }
+  .surface-2 { background-color: var(--color-steel-gray); }
+
+  .fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.7s ease-out forwards;
+    opacity: 0;
+  }
+
+  .fade-in-up-delay-1 { animation-delay: 0.1s; }
+  .fade-in-up-delay-2 { animation-delay: 0.2s; }
+  .fade-in-up-delay-3 { animation-delay: 0.3s; }
+  .fade-in-up-delay-4 { animation-delay: 0.4s; }
+
+  .glow-violet {
+    box-shadow: 0 0 0 1px rgba(99, 91, 255, 0.1), 0 4px 24px rgba(99, 91, 255, 0.08);
+  }
+
+  .border-subtle {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-pulse-subtle { animation: pulse-subtle 2s ease-in-out infinite; }
