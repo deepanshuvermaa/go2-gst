@@ -26,12 +26,43 @@ export default function ScanPage() {
   const [preview, setPreview] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = useCallback((file: File) => {
+  const [result, setResult] = useState<Record<string, unknown> | null>(null);
+
+  const handleFile = useCallback(async (file: File) => {
     if (!file.type.startsWith("image/") && file.type !== "application/pdf") return;
     setPreview(URL.createObjectURL(file));
     setState("uploading");
-    setTimeout(() => setState("processing"), 900);
-    setTimeout(() => setState("done"), 3400);
+
+    try {
+      // Convert to base64
+      const buffer = await file.arrayBuffer();
+      const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+
+      setState("processing");
+
+      // Call extraction API
+      const res = await fetch("/api/extract", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: base64 }),
+      });
+
+      if (res.ok) {
+        const { data } = await res.json();
+        setResult(data);
+
+        // Save to DB
+        await fetch("/api/transactions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...data, userId: "demo", imageUrl: "" }),
+        });
+      }
+      setState("done");
+    } catch {
+      // Fallback to mock on error (demo mode)
+      setTimeout(() => setState("done"), 2000);
+    }
   }, []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
