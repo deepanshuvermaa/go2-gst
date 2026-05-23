@@ -14,28 +14,21 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 bg-canvas-white border-t border-ink-black/[0.06] z-50"
-      aria-label="Mobile navigation"
-    >
-      <div className="flex items-center justify-around h-16 px-2">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 h-[68px] bg-[rgba(252,252,252,0.92)] backdrop-blur-[16px] border-t border-[#e2e8f0]" aria-label="Mobile">
+      <div className="flex items-center justify-around h-full px-4">
         {tabs.map(({ href, label, icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
               key={href}
               href={href}
-              className={`
-                flex flex-col items-center gap-1 px-3 py-1.5 rounded-[8px]
-                transition-colors duration-150
-                ${active ? "text-deep-space-violet" : "text-muted-stone"}
-              `}
+              className={`flex flex-col items-center gap-1 min-w-[44px] min-h-[44px] justify-center transition-colors ${active ? "text-[#3b5bdb]" : "text-[#94a3b8]"}`}
               aria-current={active ? "page" : undefined}
             >
-              <svg className="w-5 h-5" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-[20px] h-[20px]" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d={icon} />
               </svg>
-              <span className="text-[11px] font-medium">{label}</span>
+              <span className="text-[10px] font-medium">{label}</span>
             </Link>
           );
         })}

@@ -1,108 +1,92 @@
 "use client";
 
-import { Card, Badge, Button } from "@/components/ui";
+import { Badge, Button } from "@/components/ui";
 
-const gstr3bSummary = {
-  outputTax: { cgst: 12450, sgst: 12450, igst: 18624, cess: 0 },
-  itcAvailable: { cgst: 10200, sgst: 10200, igst: 17790, cess: 0 },
-  netPayable: { cgst: 2250, sgst: 2250, igst: 834, cess: 0 },
+const gstr3b = {
+  output: { cgst: 12450, sgst: 12450, igst: 18624, cess: 0 },
+  itc: { cgst: 10200, sgst: 10200, igst: 17790, cess: 0 },
+  net: { cgst: 2250, sgst: 2250, igst: 834, cess: 0 },
 };
 
-const formatINR = (n: number) =>
-  new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
+const fmt = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
 export default function ReportsPage() {
   return (
     <div className="space-y-8">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="font-[var(--font-display)] text-[28px] leading-[1.13] tracking-[-0.84px] text-deep-midnight">
-            Reports
-          </h1>
-          <p className="text-[14px] text-muted-stone mt-1 tracking-[-0.02em]">
-            GST return summaries and exports
-          </p>
+          <h1 className="font-[var(--font-heading)] text-[24px] font-semibold text-[#1a1a2e]">Reports</h1>
+          <p className="text-[13px] text-[#94a3b8] mt-1">GST return summaries and exports</p>
         </div>
-        <select
-          className="text-[13px] text-muted-stone bg-transparent border border-ink-black/10 rounded-[100px] px-3 py-1.5 focus:outline-none focus:border-deep-space-violet"
-          aria-label="Select period"
-        >
+        <select className="h-[36px] px-3 text-[13px] text-[#4a5568] bg-[#fcfcfc] border border-[#e2e8f0] rounded-[10px] focus:outline-none focus:border-[#3b5bdb]">
           <option>Nov 2024</option>
           <option>Oct 2024</option>
         </select>
       </div>
 
-      {/* GSTR-3B Summary */}
+      {/* GSTR-3B */}
       <div>
-        <h2 className="text-[16px] font-medium text-ink-black tracking-[-0.02em] mb-4">
-          GSTR-3B Summary
-        </h2>
-        <Card surface="dark" padding="lg">
-          <div className="overflow-x-auto">
-            <table className="w-full text-[13px] tracking-[-0.02em]">
-              <thead>
-                <tr className="text-canvas-white/60 border-b border-canvas-white/10">
-                  <th className="text-left py-2 font-medium">Component</th>
-                  <th className="text-right py-2 font-medium">CGST</th>
-                  <th className="text-right py-2 font-medium">SGST</th>
-                  <th className="text-right py-2 font-medium">IGST</th>
-                  <th className="text-right py-2 font-medium">Cess</th>
-                </tr>
-              </thead>
-              <tbody className="text-canvas-white">
-                <tr className="border-b border-canvas-white/5">
-                  <td className="py-3">3.1 — Output Tax</td>
-                  <td className="text-right">{formatINR(gstr3bSummary.outputTax.cgst)}</td>
-                  <td className="text-right">{formatINR(gstr3bSummary.outputTax.sgst)}</td>
-                  <td className="text-right">{formatINR(gstr3bSummary.outputTax.igst)}</td>
-                  <td className="text-right">{formatINR(gstr3bSummary.outputTax.cess)}</td>
-                </tr>
-                <tr className="border-b border-canvas-white/5">
-                  <td className="py-3">4A — ITC Available</td>
-                  <td className="text-right text-success">{formatINR(gstr3bSummary.itcAvailable.cgst)}</td>
-                  <td className="text-right text-success">{formatINR(gstr3bSummary.itcAvailable.sgst)}</td>
-                  <td className="text-right text-success">{formatINR(gstr3bSummary.itcAvailable.igst)}</td>
-                  <td className="text-right text-success">{formatINR(gstr3bSummary.itcAvailable.cess)}</td>
-                </tr>
-                <tr>
-                  <td className="py-3 font-medium">5 — Net Payable</td>
-                  <td className="text-right font-medium">{formatINR(gstr3bSummary.netPayable.cgst)}</td>
-                  <td className="text-right font-medium">{formatINR(gstr3bSummary.netPayable.sgst)}</td>
-                  <td className="text-right font-medium">{formatINR(gstr3bSummary.netPayable.igst)}</td>
-                  <td className="text-right font-medium">{formatINR(gstr3bSummary.netPayable.cess)}</td>
-                </tr>
-              </tbody>
-            </table>
+        <h2 className="font-[var(--font-heading)] text-[15px] font-semibold text-[#1a1a2e] mb-4">GSTR-3B Summary</h2>
+        <div className="rounded-[14px] border border-[#e2e8f0] overflow-hidden">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="bg-[#eef2fb] border-b border-[#e2e8f0]">
+                <th className="text-left py-3 px-4 font-medium text-[#4a5568]">Component</th>
+                <th className="text-right py-3 px-4 font-medium text-[#4a5568]">CGST</th>
+                <th className="text-right py-3 px-4 font-medium text-[#4a5568]">SGST</th>
+                <th className="text-right py-3 px-4 font-medium text-[#4a5568]">IGST</th>
+                <th className="text-right py-3 px-4 font-medium text-[#4a5568]">Cess</th>
+              </tr>
+            </thead>
+            <tbody className="text-[#1a1a2e]">
+              <tr className="border-b border-[#e2e8f0]">
+                <td className="py-3 px-4 text-[#4a5568]">3.1 — Output Tax</td>
+                <td className="text-right py-3 px-4 tabular-nums">{fmt(gstr3b.output.cgst)}</td>
+                <td className="text-right py-3 px-4 tabular-nums">{fmt(gstr3b.output.sgst)}</td>
+                <td className="text-right py-3 px-4 tabular-nums">{fmt(gstr3b.output.igst)}</td>
+                <td className="text-right py-3 px-4 tabular-nums">{fmt(gstr3b.output.cess)}</td>
+              </tr>
+              <tr className="border-b border-[#e2e8f0]">
+                <td className="py-3 px-4 text-[#4a5568]">4A — ITC Available</td>
+                <td className="text-right py-3 px-4 tabular-nums text-[#22c55e]">{fmt(gstr3b.itc.cgst)}</td>
+                <td className="text-right py-3 px-4 tabular-nums text-[#22c55e]">{fmt(gstr3b.itc.sgst)}</td>
+                <td className="text-right py-3 px-4 tabular-nums text-[#22c55e]">{fmt(gstr3b.itc.igst)}</td>
+                <td className="text-right py-3 px-4 tabular-nums text-[#22c55e]">{fmt(gstr3b.itc.cess)}</td>
+              </tr>
+              <tr>
+                <td className="py-3 px-4 font-semibold">5 — Net Payable</td>
+                <td className="text-right py-3 px-4 tabular-nums font-semibold">{fmt(gstr3b.net.cgst)}</td>
+                <td className="text-right py-3 px-4 tabular-nums font-semibold">{fmt(gstr3b.net.sgst)}</td>
+                <td className="text-right py-3 px-4 tabular-nums font-semibold">{fmt(gstr3b.net.igst)}</td>
+                <td className="text-right py-3 px-4 tabular-nums font-semibold">{fmt(gstr3b.net.cess)}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="px-4 py-3 bg-[#eef2fb] border-t border-[#e2e8f0] flex items-center justify-between">
+            <p className="text-[13px] text-[#4a5568]">Total Net Payable: <span className="font-semibold text-[#1a1a2e]">₹5,334</span></p>
+            <Badge variant="primary">Ready to file</Badge>
           </div>
-          <div className="mt-4 pt-4 border-t border-canvas-white/10 flex items-center justify-between">
-            <p className="text-[14px] text-canvas-white/80">
-              Total Net Payable: <span className="font-medium text-canvas-white">{formatINR(5334)}</span>
-            </p>
-            <Badge variant="violet">Ready to file</Badge>
-          </div>
-        </Card>
+        </div>
       </div>
 
-      {/* Export Actions */}
+      {/* Export */}
       <div>
-        <h2 className="text-[16px] font-medium text-ink-black tracking-[-0.02em] mb-4">
-          Export
-        </h2>
+        <h2 className="font-[var(--font-heading)] text-[15px] font-semibold text-[#1a1a2e] mb-4">Export</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Card surface="light" interactive padding="md" className="flex items-center justify-between">
+          <div className="rounded-[14px] border border-[#e2e8f0] p-4 flex items-center justify-between hover:border-[#d6e4ff] hover:bg-[#eef2fb] transition-all">
             <div>
-              <p className="text-[14px] font-medium text-ink-black tracking-[-0.02em]">GSTR-1 JSON</p>
-              <p className="text-[12px] text-muted-stone">Upload directly to GST portal</p>
+              <p className="text-[13px] font-semibold text-[#1a1a2e]">GSTR-1 JSON</p>
+              <p className="text-[12px] text-[#94a3b8] mt-0.5">Upload directly to GST portal</p>
             </div>
-            <Button variant="ghost" size="sm">Download</Button>
-          </Card>
-          <Card surface="light" interactive padding="md" className="flex items-center justify-between">
+            <Button variant="secondary" size="sm">Download</Button>
+          </div>
+          <div className="rounded-[14px] border border-[#e2e8f0] p-4 flex items-center justify-between hover:border-[#d6e4ff] hover:bg-[#eef2fb] transition-all">
             <div>
-              <p className="text-[14px] font-medium text-ink-black tracking-[-0.02em]">GSTR-3B JSON</p>
-              <p className="text-[12px] text-muted-stone">Monthly return summary</p>
+              <p className="text-[13px] font-semibold text-[#1a1a2e]">GSTR-3B JSON</p>
+              <p className="text-[12px] text-[#94a3b8] mt-0.5">Monthly return summary</p>
             </div>
-            <Button variant="ghost" size="sm">Download</Button>
-          </Card>
+            <Button variant="secondary" size="sm">Download</Button>
+          </div>
         </div>
       </div>
     </div>

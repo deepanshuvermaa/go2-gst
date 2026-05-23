@@ -2,18 +2,13 @@ import { Sidebar } from "./sidebar";
 import { MobileNav } from "./mobile-nav";
 import { TopBar } from "./top-bar";
 
-interface AppShellProps {
-  children: React.ReactNode;
-  title?: string;
-}
-
-export function AppShell({ children, title }: AppShellProps) {
+export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-canvas-white">
+    <div className="min-h-screen bg-[#fcfcfc]">
       <Sidebar />
-      <TopBar title={title} />
-      <main className="md:ml-[240px] pb-20 md:pb-0">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 py-6 md:py-10">
+      <TopBar />
+      <main className="md:ml-[220px] pb-[80px] md:pb-0">
+        <div className="max-w-[860px] mx-auto px-5 md:px-8 py-6 md:py-8">
           {children}
         </div>
       </main>
