@@ -14,6 +14,7 @@ const navItems = [
   { href: "/itr", label: "ITR Calculator", icon: "M9 1v16M1 9h16M4 4l10 10M14 4L4 14" },
   { href: "/ca", label: "CA Portal", icon: "M5 5a3 3 0 016 0 3 3 0 01-6 0zM12 5a3 3 0 016 0 3 3 0 01-6 0zM2 17c0-2 2-4 5-4s5 2 5 4M9 17c0-2 2-4 5-4s5 2 5 4" },
   { href: "/settings", label: "Settings", icon: "M9 9a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM9 1v2M9 15v2M1 9h2M15 9h2M3.3 3.3l1.4 1.4M13.3 13.3l1.4 1.4M3.3 14.7l1.4-1.4M13.3 4.7l1.4-1.4" },
+  { href: "/how-it-works", label: "How It Works", icon: "M9 1a8 8 0 100 16A8 8 0 009 1zM9 5v4l2.5 2.5" },
 ];
 
 export function Sidebar() {
